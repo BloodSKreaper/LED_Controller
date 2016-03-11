@@ -12,8 +12,12 @@
     tools:context="de.simon_dankelmann.ledcontroller.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
+    <com.larswerkman.holocolorpicker.ColorPicker
+        android:id="@+id/picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="79dp" />
+
 </RelativeLayout>
