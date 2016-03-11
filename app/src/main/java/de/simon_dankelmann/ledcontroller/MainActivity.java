@@ -1,6 +1,7 @@
 package de.simon_dankelmann.ledcontroller;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.larswerkman.holocolorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.OpacityBar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,7 +29,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -33,6 +37,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //SET COLORPICKER LISTENER
+        ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
+        OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
+        picker.addOpacityBar(opacityBar);
+
+        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int color) {
+                changeColor(color);
+            }
+        });
     }
 
     @Override
@@ -79,4 +95,16 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+    public void changeColor(int color){
+        int iRed = Color.red(color);
+        int iGreen = Color.green(color);
+        int iBlue = Color.blue(color);
+        int iAlpha = Color.alpha(color);
+        String sToastMessage = "R: " + iRed + " G: " + iGreen + " B: " + iBlue + " A: " + iAlpha;
+        Snackbar.make(findViewById(R.id.picker),sToastMessage,Snackbar.LENGTH_SHORT).show();
+    }
 }
+
