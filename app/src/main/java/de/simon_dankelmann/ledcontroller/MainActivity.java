@@ -3,24 +3,20 @@ package de.simon_dankelmann.ledcontroller;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+// IMPORTING THE COLORPICKER
 import com.larswerkman.holocolorpicker.ColorPicker;
 import com.larswerkman.holocolorpicker.OpacityBar;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +34,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //SET COLORPICKER LISTENER
+        // CONNECT COLORPICKER AND OPACITYBAR
         ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
         OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
         picker.addOpacityBar(opacityBar);
 
+        //SET COLORPICKER LISTENER
         picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
             @Override
             public void onColorChanged(int color) {
@@ -61,33 +58,17 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // CLICKHANDLES ON NAVIGATIONITEMS WILL BE HANDLED HERE
         int id = item.getItemId();
 
         if (id == R.id.nav_settings) {
-            // Handle the camera action
+            // OPEN SETTINGS ACTIVITY
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_exit) {
+            // EXIT APP
             finish();
         }
 
@@ -96,8 +77,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-
+    // GET RGBA VALUES OF SELECTED COLOR
     public void changeColor(int color){
         int iRed = Color.red(color);
         int iGreen = Color.green(color);
