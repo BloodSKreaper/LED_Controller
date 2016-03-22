@@ -83,6 +83,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int iGreen = Color.green(color);
         int iBlue = Color.blue(color);
         int iAlpha = Color.alpha(color);
+
+        // USE ALPHA TO LOWER THE INTENSITY
+        int iReduce = 255 - iAlpha;
+        iRed = iRed - iReduce;
+        iGreen = iGreen - iReduce;
+        iBlue = iBlue - iReduce;
+
+        // COLORS CANT BE NEGATIVE
+        if(iRed < 0){iRed = 0;}
+        if(iGreen < 0){iGreen = 0;}
+        if(iBlue < 0){iBlue = 0;}
+
         String sToastMessage = "R: " + iRed + " G: " + iGreen + " B: " + iBlue + " A: " + iAlpha;
         Snackbar.make(findViewById(R.id.picker),sToastMessage,Snackbar.LENGTH_SHORT).show();
     }
