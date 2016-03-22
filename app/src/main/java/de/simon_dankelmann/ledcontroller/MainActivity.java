@@ -1,8 +1,11 @@
 package de.simon_dankelmann.ledcontroller;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.audiofx.BassBoost;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,9 +21,15 @@ import com.larswerkman.holocolorpicker.OpacityBar;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // GET SETTINGS
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,13 +88,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // GET RGBA VALUES OF SELECTED COLOR
     public void changeColor(int color){
-        int iRed = Color.red(color);
+        String sServerIp = sharedPreferences.getString("PREF_SERVER_IP", "");
+        String sServerPort = sharedPreferences.getString("PREF_SERVER_PORT", "");
+
+        // SPLIT COLORVALUE (INT) INTO R;G;B;A INTEGERS
+        int iRed   = Color.red(color);
         int iGreen = Color.green(color);
-        int iBlue = Color.blue(color);
+        int iBlue  = Color.blue(color);
         int iAlpha = Color.alpha(color);
 
         // USE ALPHA TO LOWER THE INTENSITY
         int iReduce = 255 - iAlpha;
+
+        // REDUCE INTENSITY BY DETECTED VALUE
         iRed = iRed - iReduce;
         iGreen = iGreen - iReduce;
         iBlue = iBlue - iReduce;
@@ -95,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(iGreen < 0){iGreen = 0;}
         if(iBlue < 0){iBlue = 0;}
 
+        // SEND RGB COLOR TO OUR LED-SERVER
         String sToastMessage = "R: " + iRed + " G: " + iGreen + " B: " + iBlue + " A: " + iAlpha;
+        sToastMessage = sServerPort;
         Snackbar.make(findViewById(R.id.picker),sToastMessage,Snackbar.LENGTH_SHORT).show();
     }
 }
