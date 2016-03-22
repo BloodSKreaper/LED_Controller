@@ -14,6 +14,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 // IMPORTING THE COLORPICKER
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -55,6 +57,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 changeColor(color);
             }
         });
+
+        Switch onOffSwitch = (Switch)findViewById(R.id.onOffSwitch);
+        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
+                    changeColor(picker.getColor());
+                }else{
+                    switchOff();
+                }
+            }
+        });
     }
 
     @Override
@@ -77,6 +92,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // OPEN SETTINGS ACTIVITY
             startActivity(new Intent(MainActivity.this, SettingsActivity.class));
         } else if (id == R.id.nav_exit) {
+            // SWITCH OFF LED'S IF NOT DEATIVATED
+            boolean bSwitchOff = sharedPreferences.getBoolean("PREF_TURNOFFONEXIT", true);
+            if(bSwitchOff){
+                switchOff();
+            }
             // EXIT APP
             finish();
         }
@@ -88,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     // GET RGBA VALUES OF SELECTED COLOR
     public void changeColor(int color){
-        String sServerIp = sharedPreferences.getString("PREF_SERVER_IP", "");
-        String sServerPort = sharedPreferences.getString("PREF_SERVER_PORT", "");
 
         // SPLIT COLORVALUE (INT) INTO R;G;B;A INTEGERS
         int iRed   = Color.red(color);
@@ -110,9 +128,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(iGreen < 0){iGreen = 0;}
         if(iBlue < 0){iBlue = 0;}
 
+        setLedColor(iRed, iGreen, iBlue);
+
+        Switch onOffSwitch = (Switch)findViewById(R.id.onOffSwitch);
+        if(!onOffSwitch.isChecked()){
+            onOffSwitch.setChecked(true);
+        }
+    }
+
+    public void switchOff(){
+        setLedColor(0,0,0);
+    }
+
+    //SEND THE COLORVALUES TO OUR SERVER
+    public void setLedColor(int iRed,int iGreen, int iBlue){
+        String sServerIp = sharedPreferences.getString("PREF_SERVER_IP", "");
+        String sServerPort = sharedPreferences.getString("PREF_SERVER_PORT", "");
         // SEND RGB COLOR TO OUR LED-SERVER
-        String sToastMessage = "R: " + iRed + " G: " + iGreen + " B: " + iBlue + " A: " + iAlpha;
-        sToastMessage = sServerPort;
+        String sToastMessage = "R: " + iRed + " G: " + iGreen + " B: " + iBlue;
         Snackbar.make(findViewById(R.id.picker),sToastMessage,Snackbar.LENGTH_SHORT).show();
     }
 }

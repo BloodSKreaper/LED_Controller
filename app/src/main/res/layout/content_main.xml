@@ -13,7 +13,6 @@
     tools:context="de.simon_dankelmann.ledcontroller.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,8 +35,9 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="57dp"
+        android:layout_marginBottom="45dp"
         >
+
         <com.larswerkman.holocolorpicker.OpacityBar
             android:id="@+id/opacitybar"
             android:layout_width="fill_parent"
@@ -46,6 +46,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             />
+
     </RelativeLayout>
 
 </RelativeLayout>
