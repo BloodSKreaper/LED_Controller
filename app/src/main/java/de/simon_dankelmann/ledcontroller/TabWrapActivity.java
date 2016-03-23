@@ -4,37 +4,64 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-// IMPORTING THE COLORPICKER
 import com.larswerkman.holocolorpicker.ColorPicker;
-import com.larswerkman.holocolorpicker.OpacityBar;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
-    private SharedPreferences sharedPreferences;
-    private LedController ledController;
+public class TabWrapActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
+        private LedController ledController;
+        private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // GET SETTINGS
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        ledController = new LedController(this);
-
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tab_wrap);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // INIT LED CONTROLLER
+        ledController = new LedController(this);
+
+        // INIT TABCONTROL
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Colors"));
+        tabLayout.addTab(tabLayout.newTab().setText("Presets"));
+        tabLayout.addTab(tabLayout.newTab().setText("Effects"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -45,32 +72,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // CONNECT COLORPICKER AND OPACITYBAR
-        ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
-        OpacityBar opacityBar = (OpacityBar) findViewById(R.id.opacitybar);
-        picker.addOpacityBar(opacityBar);
-
-        //SET COLORPICKER LISTENER
-        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int color) {
-                ledController.changeColor(color);
-            }
-        });
-
-        Switch onOffSwitch = (Switch)findViewById(R.id.onOffSwitch);
+        Switch onOffSwitch = (Switch)findViewById(R.id.onOffSwitchTab);
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    ColorPicker picker = (ColorPicker) findViewById(R.id.picker);
+                    ColorPicker picker = (ColorPicker) findViewById(R.id.pickerTab);
                     ledController.changeColor(picker.getColor());
                 } else {
                     ledController.switchOff();
                 }
             }
         });
-
     }
 
     @Override
@@ -86,14 +99,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // CLICKHANDLES ON NAVIGATIONITEMS WILL BE HANDLED HERE
+        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_settings) {
-            // OPEN SETTINGS ACTIVITY
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-        } else if (id == R.id.nav_exit) {
-            // SWITCH OFF LED'S IF NOT DEATIVATED
+        if (id == R.id.nav_settings_tab) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else if(id == R.id.nav_exit_tab){
             boolean bSwitchOff = sharedPreferences.getBoolean("PREF_TURNOFFONEXIT", true);
             if(bSwitchOff){
                 ledController.switchOff();
@@ -106,7 +117,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 }
-
