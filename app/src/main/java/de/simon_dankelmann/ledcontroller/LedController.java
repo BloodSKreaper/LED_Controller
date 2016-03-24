@@ -4,18 +4,17 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.widget.Switch;
 
-
-/**
- * Created by dankelmann on 23.03.16.
- */
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class LedController{
 
     private SharedPreferences sharedPreferences;
+    private String sServerCommand = "";
     public Activity parentActivity;
 
     public LedController(Activity a){
@@ -59,10 +58,45 @@ public class LedController{
 
     //SEND THE COLORVALUES TO OUR SERVER
     public void setLedColor(int iRed,int iGreen, int iBlue){
-        String sServerIp = sharedPreferences.getString("PREF_SERVER_IP", "");
-        String sServerPort = sharedPreferences.getString("PREF_SERVER_PORT", "");
         // SEND RGB COLOR TO OUR LED-SERVER
-        String sToastMessage = "R: " + iRed + " G: " + iGreen + " B: " + iBlue;
-        Snackbar.make(parentActivity.findViewById(R.id.pickerTab), sToastMessage, Snackbar.LENGTH_SHORT).show();
+        String sCommand = iRed + "," + iGreen + "," + iBlue;
+        sendCommand(sCommand);
+    }
+
+    private void sendToPort() throws IOException {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run() {
+                try
+                {
+                    String sServerIp = sharedPreferences.getString("PREF_SERVER_IP", "");
+                    int iServerPort = Integer.parseInt(sharedPreferences.getString("PREF_SERVER_PORT", ""));
+                    Socket socket;
+                    socket = new Socket(sServerIp, iServerPort);
+                    PrintWriter printwriter = new PrintWriter(socket.getOutputStream(),true);
+                    printwriter.write(sServerCommand);
+                    printwriter.flush();
+                    printwriter.close();
+                    socket.close();
+                }
+                catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void sendCommand(String command){
+        sServerCommand = command;
+        try {
+            sendToPort();
+            //Snackbar.make(parentActivity.findViewById(R.id.pickerTab), "SENT: " + command, Snackbar.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
     }
 }
+

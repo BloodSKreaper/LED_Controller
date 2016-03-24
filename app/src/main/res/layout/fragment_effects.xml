@@ -5,4 +5,12 @@
     android:background="@drawable/app_bg"
     tools:context="de.simon_dankelmann.ledcontroller.EffectsFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sorry, not implemented yet :("
+        android:textColor="#ffffff"
+        android:textAlignment="center"
+        android:layout_gravity="center_vertical" />
+
 </FrameLayout>
