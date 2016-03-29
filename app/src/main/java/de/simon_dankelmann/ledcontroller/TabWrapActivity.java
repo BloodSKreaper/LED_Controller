@@ -102,6 +102,7 @@ public class TabWrapActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        
         if (id == R.id.nav_settings_tab) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if(id == R.id.nav_exit_tab){
