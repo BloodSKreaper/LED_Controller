@@ -35,7 +35,7 @@ public class TabWrapActivity extends AppCompatActivity
         // INIT LED CONTROLLER
         ledController = new LedController(this);
 
-        // INIT TABCONTROL
+        // INIT TAB-CONTROL
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Colors"));
         tabLayout.addTab(tabLayout.newTab().setText("Presets"));
