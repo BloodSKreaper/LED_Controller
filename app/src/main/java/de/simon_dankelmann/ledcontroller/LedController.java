@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.widget.Switch;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -53,7 +55,7 @@ public class LedController{
     }
 
     public void switchOff(){
-        setLedColor(0,0,0);
+        setLedColor(0, 0, 0);
     }
 
     //SEND THE COLORVALUES TO OUR SERVER
@@ -71,14 +73,17 @@ public class LedController{
                 try
                 {
                     String sServerIp = sharedPreferences.getString("PREF_SERVER_IP", "");
-                    int iServerPort = Integer.parseInt(sharedPreferences.getString("PREF_SERVER_PORT", ""));
-                    Socket socket;
-                    socket = new Socket(sServerIp, iServerPort);
-                    PrintWriter printwriter = new PrintWriter(socket.getOutputStream(),true);
-                    printwriter.write(sServerCommand);
-                    printwriter.flush();
-                    printwriter.close();
-                    socket.close();
+                    Integer iServerPort = NumberUtils.toInt(sharedPreferences.getString("PREF_SERVER_PORT", ""), 0);
+                    if (!sServerIp.isEmpty() && iServerPort != 0)
+                    {
+                        Socket socket;
+                        socket = new Socket(sServerIp, iServerPort);
+                        PrintWriter printwriter = new PrintWriter(socket.getOutputStream(),true);
+                        printwriter.write(sServerCommand);
+                        printwriter.flush();
+                        printwriter.close();
+                        socket.close();
+                    }
                 }
                 catch (UnknownHostException e) {
                     e.printStackTrace();
