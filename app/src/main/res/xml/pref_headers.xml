@@ -2,12 +2,10 @@
 
     <header
         android:fragment="de.simon_dankelmann.ledcontroller.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
         android:fragment="de.simon_dankelmann.ledcontroller.SettingsActivity$DataSyncPreferenceFragment"
-        android:icon="@drawable/ic_sync_black_24dp"
         android:title="Network" />
 
 </preference-headers>

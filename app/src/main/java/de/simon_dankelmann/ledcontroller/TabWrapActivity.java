@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -29,7 +30,6 @@ public class TabWrapActivity extends AppCompatActivity
         setContentView(R.layout.activity_tab_wrap);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         // INIT LED CONTROLLER
