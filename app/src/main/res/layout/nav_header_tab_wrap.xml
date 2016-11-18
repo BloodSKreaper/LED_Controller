@@ -25,12 +25,15 @@
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="LED-Controller"
+        android:textStyle="bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="by Simon Dankelmann" />
+        android:text="by Simon Dankelmann"
+        android:textColor="@color/colorAccent"
+        />
 
 </LinearLayout>

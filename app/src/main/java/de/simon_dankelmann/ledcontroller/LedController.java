@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.widget.Switch;
 
 import org.apache.commons.lang3.math.NumberUtils;
@@ -63,6 +64,11 @@ public class LedController{
         // SEND RGB COLOR TO OUR LED-SERVER
         String sCommand = iRed + "," + iGreen + "," + iBlue;
         sendCommand(sCommand);
+    }
+
+    public void effect_cops(){
+        String sCommand = "COPS";
+        this.sendCommand(sCommand);
     }
 
     private void sendToPort() throws IOException {

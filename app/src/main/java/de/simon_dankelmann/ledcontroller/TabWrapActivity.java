@@ -17,6 +17,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
+
+
 import com.larswerkman.holocolorpicker.ColorPicker;
 
 public class TabWrapActivity extends AppCompatActivity
