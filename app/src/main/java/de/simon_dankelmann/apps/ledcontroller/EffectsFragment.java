@@ -73,8 +73,9 @@ public class EffectsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_effects, container, false);
 
         String sServerIp = settings.getString("PREF_SERVER_IP","");
-        Integer iServerPort = Integer.parseInt(settings.getString("PREF_SERVER_PORT", "").toString());
-        ledController = new LedController(sServerIp, iServerPort);
+        int iPort = settings.getInt("PREF_SERVER_PORT", 0);
+
+        ledController = new LedController(sServerIp, iPort);
 
         // COP EFFECT
         Switch effect_switch_cops = (Switch) view.findViewById(R.id.switch_effect_cops);

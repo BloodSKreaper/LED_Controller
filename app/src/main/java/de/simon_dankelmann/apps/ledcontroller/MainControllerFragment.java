@@ -77,9 +77,9 @@ public class MainControllerFragment extends Fragment {
 
 
         String sServerIp = settings.getString("PREF_SERVER_IP","");
-        Integer iServerPort = Integer.parseInt(settings.getString("PREF_SERVER_PORT", "").toString());
+        int iPort = settings.getInt("PREF_SERVER_PORT", 0);
 
-        ledController = new LedController(sServerIp, iServerPort);
+        ledController = new LedController(sServerIp, iPort);
 
 
         final Switch onOffSwitch = (Switch)view.findViewById(R.id.onOffSwitchMainController);

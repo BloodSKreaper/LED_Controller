@@ -2,6 +2,7 @@ package de.simon_dankelmann.apps.ledcontroller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Interpolator;
 import android.preference.PreferenceManager;
 
 /**
@@ -22,6 +23,14 @@ public class SettingsManager {
 
     public Boolean getBoolean(String keyString, Boolean returnValue){
         return preferences.getBoolean(keyString, returnValue);
+    }
+
+    public  int getInt(String keyString, int i){
+        String sReturn = this.getString(keyString,"");
+        if(sReturn == ""){
+            return 0;
+        }
+        return Integer.parseInt(sReturn);
     }
 
 }
