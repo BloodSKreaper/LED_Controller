@@ -79,11 +79,22 @@ public class EffectsFragment extends Fragment {
 
         // COP EFFECT
         Switch effect_switch_cops = (Switch) view.findViewById(R.id.switch_effect_cops);
-
         effect_switch_cops.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     ledController.setEffect("COPS");
+                } else {
+                    ledController.stopEffects();
+                }
+            }
+        });
+
+        // FADE EFFECT
+        Switch effect_switch_fade = (Switch) view.findViewById(R.id.switch_effect_fade);
+        effect_switch_fade.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    ledController.setEffect("FADE");
                 } else {
                     ledController.stopEffects();
                 }

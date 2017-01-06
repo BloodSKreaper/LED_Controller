@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     tools:context="de.simon_dankelmann.apps.ledcontroller.EffectsFragment">
 
+
+
     <Switch
         android:text="Cops"
         android:layout_width="match_parent"
@@ -11,5 +13,18 @@
         android:paddingRight="15dp"
         android:paddingLeft="15dp"
         android:textColor="#FFFFFF"
-        android:id="@+id/switch_effect_cops" />
+        android:id="@+id/switch_effect_cops"
+         />
+
+    <Switch
+        android:text="Fade"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/switch_effect_fade"
+        android:layout_marginTop="50dp"/>
+
+
 </FrameLayout>

@@ -3,6 +3,7 @@ package de.simon_dankelmann.apps.ledcontroller;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,7 +18,9 @@ public class LedController{
     private String sServerCommand = "";
     private String sServerIp = "127.0.0.1";
     private int iServerPort = 12345;
-    private Timer oEffectTimer = new Timer();
+    private Timer oEffectTimer_Cops;
+    private Timer oEffectTimer_Fade;
+
 
 
     public LedController(String sServerIp, Integer iServerPort){
@@ -53,12 +56,20 @@ public class LedController{
     }
 
     public void switchOff(){
-        setLedColor(0, 0, 0);
+        this.sendCommand("OFF");
     }
 
     //SEND THE COLORVALUES TO OUR SERVER
     public void setLedColor(int iRed,int iGreen, int iBlue){
         // SEND RGB COLOR TO OUR LED-SERVER
+        if(iRed > 255){iRed = 255;}
+        if(iGreen > 255){iGreen = 255;}
+        if(iBlue > 255){iBlue = 255;}
+
+        if(iRed < 0){iRed = 0;}
+        if(iGreen < 0){iGreen = 0;}
+        if(iBlue < 0){iBlue = 0;}
+
         String sCommand = iRed + "," + iGreen + "," + iBlue;
         sendCommand(sCommand);
     }
@@ -66,14 +77,16 @@ public class LedController{
     public void setEffect(String sEffectName){
 
         if(sEffectName == "COPS"){
-            CopEffectTimerTask copEffectTask = new CopEffectTimerTask();
-            copEffectTask.setLedController(this);
-            oEffectTimer.schedule(copEffectTask, 0, 750);
+           this.sendCommand(sEffectName);
+        }
+
+        if(sEffectName == "FADE"){
+           this.sendCommand(sEffectName);
         }
     }
 
     public void stopEffects(){
-        oEffectTimer.cancel();
+        this.sendCommand("STOP");
     }
 
     private void sendToPort() throws IOException {
@@ -129,6 +142,41 @@ public class LedController{
                 this.ledController.setLedColor(0,0,255);
             }
             this.bBufferCopEffect = !bBufferCopEffect;
+        }
+    }
+
+    class FadeEffectTimerTask extends TimerTask {
+        private int r_current = 0;
+        private int g_current = 100;
+        private int b_current = 200;
+
+        private LedController ledController;
+        private int r_speed = 1;
+        private int g_speed = 1;
+        private int b_speed = 1;
+
+        public void setLedController(LedController oLedController){
+            this.ledController = oLedController;
+        }
+
+        public void run() {
+            r_current += r_speed;
+            g_current += g_speed;
+            b_current += b_speed;
+
+            if(r_current > 255 || r_current < 0){
+                r_speed *= -1;
+            }
+
+            if(g_current > 255 || g_current < 0){
+                g_speed *= -1;
+            }
+
+            if(b_current > 255 || b_current < 0){
+                b_speed *= -1;
+            }
+
+            this.ledController.setLedColor(r_current,g_current,b_current);
         }
     }
 
