@@ -133,15 +133,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
             // SEND MAIL INTENT
             Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setData(Uri.parse("mailto:apps@simon-dankelmann.de"));
             intent.setType("text/html");
-            intent.putExtra(Intent.EXTRA_EMAIL, "apps@simon-dankelmann.de");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"apps@simon-dankelmann.de"});
             intent.putExtra(Intent.EXTRA_SUBJECT, "LED Controller Contact");
             intent.putExtra(Intent.EXTRA_TEXT, "Leave me a Message");
             startActivity(Intent.createChooser(intent, "Send Email"));
         } else if(id == R.id.nav_exit){
             boolean bSwitchOff = settings.getBoolean("PREF_TURNOFFONEXIT", true);
             if(bSwitchOff){
-                LedController lc = new LedController("192.168.0.234",12345);
+                String sServerIp = settings.getString("PREF_SERVER_IP","");
+                int iPort = settings.getInt("PREF_SERVER_PORT", 0);
+                LedController lc = new LedController(sServerIp,iPort);
                 lc.switchOff();
             }
             finish();
