@@ -5,7 +5,12 @@
         android:key="PREF_TURNOFFONEXIT"
         android:summary="Switch Off LED's on exiting the App"
         android:title="Switch off on Exit" />
-
+    <ListPreference
+        android:title="Transition"
+        android:entries="@array/ColorChangeModes"
+        android:entryValues="@array/ColorChangeModes"
+        android:key="transition"
+        android:summary="Mode for chaning LED-Color e.g. fading" />
 
 
 </PreferenceScreen>

@@ -75,27 +75,51 @@ public class MainControllerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main_controller, container, false);
 
 
-
         String sServerIp = settings.getString("PREF_SERVER_IP","");
         int iPort = settings.getInt("PREF_SERVER_PORT", 0);
 
         ledController = new LedController(sServerIp, iPort);
-
-
         final Switch onOffSwitch = (Switch)view.findViewById(R.id.onOffSwitchMainController);
+
+        String sMode = settings.getString("transition","");
+        if(sMode == ""){
+            sMode = "default";
+        }
+        onOffSwitch.setText(sMode);
+
+
         // CONNECT COLORPICKER AND OPACITYBAR
         picker = (ColorPicker) view.findViewById(R.id.picker);
         opacityBar = (OpacityBar) view.findViewById(R.id.opacitybar);
         picker.addOpacityBar(opacityBar);
         //SET COLORPICKER LISTENER
-        picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int color) {
-                ledController.changeColor(color);
-                onOffSwitch.setChecked(true);
-            }
-        });
+        if(sMode.equals("default")){
+            picker.setOnColorChangedListener(new ColorPicker.OnColorChangedListener() {
+                @Override
+                public void onColorChanged(int color) {
+                    ledController.changeColor(color);
+                    onOffSwitch.setChecked(true);
+                }
+            });
+        }
 
+        if(sMode.equals("fade")){
+            picker.setOnColorSelectedListener(new ColorPicker.OnColorSelectedListener() {
+                @Override
+                public void onColorSelected(int color) {
+                    ledController.changeColor(color);
+                    onOffSwitch.setChecked(true);
+                }
+            });
+
+            opacityBar.setOnOpacityChangedListener(new OpacityBar.OnOpacityChangedListener() {
+                @Override
+                public void onOpacityChanged(int opacity) {
+                    ledController.changeColor(picker.getColor());
+                    onOffSwitch.setChecked(true);
+                }
+            });
+        }
 
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
