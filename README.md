@@ -8,4 +8,5 @@ at this moment it only waits for RGB values to set the chosen color and a few ef
 The Colorpicker-Plugin (HoloColorPicker) can be found here: 
 https://github.com/LarsWerkman/HoloColorPicker
 
-![Screenshot](https://github.com/simondankelmann/LED_Controller/blob/master/Colors.png)
+![Screenshot](https://github.com/simondankelmann/LED_Controller/blob/master/Screenshots/Screenshot1.png)
+![Screenshot](https://github.com/simondankelmann/LED_Controller/blob/master/Screenshots/Screenshot2.png)
