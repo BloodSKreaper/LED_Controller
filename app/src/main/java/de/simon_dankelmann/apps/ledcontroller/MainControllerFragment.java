@@ -85,8 +85,6 @@ public class MainControllerFragment extends Fragment {
         if(sMode == ""){
             sMode = "default";
         }
-        onOffSwitch.setText(sMode);
-
 
         // CONNECT COLORPICKER AND OPACITYBAR
         picker = (ColorPicker) view.findViewById(R.id.picker);
